@@ -1,15 +1,43 @@
 package agh.ics.oop;
 
+
+//lab 2
+public class World {
+    public static void main(String[] args) {
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
+
+    }
+}
+
+
+
+
+
+
+
+//lab 1
+
+/*
 //post point 16
 
 public class World {
     public static void main(String[] args) {
         System.out.println("Start");
-        for (String arg : args) System.out.print(Run(DirectionParse(arg)));
+        for (String arg : args) System.out.print(run(directionParse(arg)));
         System.out.println("Stop");
+
+        Vector2d position1 = new Vector2d(1,2);
+        System.out.println(position1);
+        Vector2d position2 = new Vector2d(-2,1);
+        System.out.println(position2);
+        System.out.println(position1.add(position2));
     }
 
-    public static String Run(Direction val) {
+    public static String run(Direction val) {
         return switch (val) {
             case FORWARD -> "Zwierzak idzie do przodu\n";
             case BACKWARD -> "Zwierzak idzie do tylu\n";
@@ -18,7 +46,7 @@ public class World {
         };
     }
 
-    public static Direction DirectionParse(String str) {
+    public static Direction directionParse(String str) {
         return switch (str) {
             case "f" -> Direction.FORWARD;
             case "b" -> Direction.BACKWARD;
@@ -26,12 +54,14 @@ public class World {
             case "r" -> Direction.RIGHT;
             default -> null;
         };
+
     }
+
 }
 
 
 //pre point 16
-/*public class World {
+public class World {
     public static void main(String[] args){
         System.out.println("system wystartowal");
         run2(args);
