@@ -3,8 +3,16 @@ package agh.ics.oop;
 public class Animal {
     private MapDirection direction = MapDirection.NORTH;
     private Vector2d pos = new Vector2d(2, 2);
+    private final IWorldMap map;
 
-    // 3.10 statyczny zbiór wszystkich zwierząt do pilnowania kolizji
+    public Animal(IWorldMap map) {
+        this.map = map;
+    }
+
+    public Animal(IWorldMap map, Vector2d initialPosition) {
+        this.map = map;
+        this.pos = initialPosition;
+    }
 
     public MapDirection getDirection() {
         return direction;
@@ -19,14 +27,7 @@ public class Animal {
     }
 
     public void move(MoveDirection dir) {
-        Vector2d newPos = getPos();
         switch (dir) {
-            case FORWARD:
-                newPos = newPos.add(getDirection().toUnitVector());
-                break;
-            case BACKWARD:
-                newPos = newPos.subtract(getDirection().toUnitVector());
-                break;
             case RIGHT:
                 this.direction = getDirection().next();
                 return;
@@ -34,13 +35,36 @@ public class Animal {
                 this.direction = getDirection().previous();
                 return;
         }
-        if (newPos.follows(World.MAP_BOTTOM_LEFT) && newPos.precedes(World.MAP_TOP_RIGHT)) {
+
+        Vector2d newPos = getPos();
+
+        switch (dir) {
+            case FORWARD:
+                newPos = newPos.add(getDirection().toUnitVector());
+                break;
+            case BACKWARD:
+                newPos = newPos.subtract(getDirection().toUnitVector());
+                break;
+        }
+
+        if (map.canMoveTo(newPos)) {
             this.pos = newPos;
         }
     }
 
     @Override
     public String toString() {
-        return "Animal(" + direction + ", " + pos + ")";
+        switch (direction) {
+            case NORTH:
+                return "^";
+            case SOUTH:
+                return "v";
+            case WEST:
+                return "<";
+            case EAST:
+                return ">";
+            default:
+                throw new IllegalArgumentException("Invalid animal direction");
+        }
     }
 }
