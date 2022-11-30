@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-//post AbstractWorldMap
+//post AbstractWorldMap task
 
 public class GrassField extends AbstractWorldMap {
 
