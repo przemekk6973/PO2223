@@ -9,8 +9,8 @@ public class World {
     public static void main(String[] args) {
         Stream<MoveDirection> directions;
 
-        // można włączyć program z argumentami random X, gdzie X to liczba
-        // co wygeneruje X losowych ruchów
+        //proszę podać ilość argumentów: random x
+        // gdzie x to ilość argumentów
 
         if (args.length == 2 && args[0].equals("random")) {
             long n = Long.parseLong(args[1]);

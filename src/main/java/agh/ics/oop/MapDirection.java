@@ -4,11 +4,12 @@ public enum MapDirection {
     NORTH,
     SOUTH,
     WEST,
-    EAST;
+    EAST,
+    ;
 
     @Override
-    public String toString(){
-        switch(this){
+    public String toString() {
+        switch (this) {
             case NORTH:
                 return "Północ";
             case SOUTH:
@@ -21,6 +22,7 @@ public enum MapDirection {
                 throw new IllegalArgumentException();
         }
     }
+
     public MapDirection next() {
         switch (this) {
             case NORTH:
@@ -35,6 +37,7 @@ public enum MapDirection {
                 throw new IllegalArgumentException();
         }
     }
+
     public MapDirection previous() {
         switch (this) {
             case NORTH:
@@ -49,6 +52,7 @@ public enum MapDirection {
                 throw new IllegalArgumentException();
         }
     }
+
     public Vector2d toUnitVector() {
         switch (this) {
             case NORTH:
