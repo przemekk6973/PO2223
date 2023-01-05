@@ -1,28 +1,20 @@
 package agh.ics.oop;
 
-import java.util.Objects;
-import java.util.stream.Stream;
-
 public class OptionsParser {
-    public static Stream<MoveDirection> parse(Stream<String> args) {
-        return args.map(arg -> {
-                    switch (arg.toLowerCase()) {
-                        case "f":
-                        case "forward":
-                            return MoveDirection.FORWARD;
-                        case "b":
-                        case "backward":
-                            return MoveDirection.BACKWARD;
-                        case "l":
-                        case "left":
-                            return MoveDirection.LEFT;
-                        case "r":
-                        case "right":
-                            return MoveDirection.RIGHT;
-                        default:
-                            return null;
-                    }
-                })
-                .filter(Objects::nonNull);
+    public static MoveDirection[] parse(String[] parametry) throws IllegalArgumentException {
+        MoveDirection[] tabdir = new MoveDirection[parametry.length];
+        int i = 0;
+        for (String parametr : parametry) {
+            switch (parametr) {
+                case "f", "forward" -> tabdir[i] = MoveDirection.FORWARD;
+                case "b", "backward" -> tabdir[i] = MoveDirection.BACKWARD;
+                case "r", "right" -> tabdir[i] = MoveDirection.RIGHT;
+                case "l", "left" -> tabdir[i] = MoveDirection.LEFT;
+                default -> throw new IllegalArgumentException("argument "+parametr+" jest głupi");
+            }
+            i++;
+        }
+        return tabdir;
     }
+
 }

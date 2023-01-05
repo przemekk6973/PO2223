@@ -1,24 +1,30 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RectangularMap extends AbstractWorldMap {
+    final int width;
+    final int height;
 
-    private final Rect bounds;
 
-    public RectangularMap(int width, int height) {
-        if (width < 1 || height < 1) {
-            throw new IllegalArgumentException("Width/height must be >0");
-        }
-        bounds = new Rect(0, 0, width - 1, height - 1);
+    RectangularMap(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
-    @Override
-    protected Rect getDrawingBounds() {
-        return bounds;
-    }
-
-    @Override
     public boolean canMoveTo(Vector2d position) {
-        return bounds.contains(position) &&
-                super.canMoveTo(position);
+        return (!isOccupied(position) && position.x <= width && position.x >= 0 && position.y >= 0 && position.y <= height);
     }
+
+
+    public boolean place(Animal animal) throws IllegalArgumentException {
+        if (canMoveTo(animal.getPosition())) {
+            mapBoundary.add(animal.getPosition(), animal);
+            animal.addObserver(this);
+            return true;
+        }
+        throw new IllegalArgumentException("nie można tu stawiać zwierzaków mój panie");
+    }
+
 }

@@ -1,50 +1,62 @@
 package agh.ics.oop;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import static java.lang.System.out;
+
+import static java.lang.Math.sqrt;
 
 public class GrassField extends AbstractWorldMap {
+    private int  grassAmount;
 
-    private final Map<Vector2d, Grass> grassFields = new HashMap<>();
-    private final int grassBound;
+    public int getGrassAmount(){
+        return grassAmount;
+    }
 
-    public GrassField(int numGrass) {
-        grassBound = (int) Math.ceil(Math.sqrt(10 * numGrass));
-        for (int i = 0; i < numGrass; i++) {
-            growGrass();
+
+
+    public void addGrass(int grassAmount){
+        Random rd = new Random();
+        this.grassAmount = grassAmount;
+        Vector2d position = new Vector2d(rd.nextInt((int)sqrt(grassAmount*10)), rd.nextInt((int)sqrt(grassAmount*10)));
+        while (objectAt(position) != null) {
+            position = new Vector2d(rd.nextInt((int)sqrt(grassAmount*10)), rd.nextInt((int)sqrt(grassAmount*10)));
+        }
+        Grass grass = new Grass(position);
+        mapBoundary.add(position, grass);
+
+    }
+
+    public GrassField(int grassAmount) {
+        for (int i = 0; i < grassAmount; i++) {
+            addGrass(grassAmount);
         }
     }
 
-    @Override
-    public boolean isOccupied(Vector2d position) {
-        return grassFields.containsKey(position) ||
-                super.isOccupied(position);
-    }
-
-    @Override
-    public Object objectAt(Vector2d position) {
-        Object o = super.objectAt(position);
-        if (o == null) {
-            o = grassFields.getOrDefault(position, null);
+    public boolean place (Animal animal){
+        if (objectAt(animal.getPosition()) instanceof Grass){
+            eatgrass((Grass) objectAt(animal.getPosition()));
         }
-        return o;
+        if (!isOccupied(animal.getPosition())){
+            animal.addObserver(this);
+            animal.addObserver(mapBoundary);
+            mapBoundary.add(animal.getPosition(), animal);
+            return true;
+        }
+        throw new IllegalArgumentException("nie można tu stawiać zwierzaków mój panie");
     }
 
-    public void eatGrass(Vector2d pos) {
-        grassFields.remove(pos);
-        growGrass();
+
+    public void eatgrass(Grass grass){
+        mapBoundary.remove(grass.getPosition());
     }
 
-    public void growGrass() {
-        Random r = new Random();
-        Vector2d p;
-        do {
-            p = new Vector2d(
-                    r.nextInt(grassBound),
-                    r.nextInt(grassBound)
-            );
-        } while (isOccupied(p));
-        grassFields.put(p, new Grass(p));
+
+
+
+    public boolean canMoveTo(Vector2d position){
+        return !(objectAt(position) instanceof Animal);
     }
 }

@@ -1,98 +1,89 @@
 package agh.ics.oop;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Animal {
-    private MapDirection direction = MapDirection.NORTH;
-    private Vector2d pos = new Vector2d(2, 2);
-    private final IWorldMap map;
-    private final Set<IPositionChangeObserver> observers = new HashSet<>();
+import static java.lang.System.out;
 
-    public Animal(IWorldMap map) {
+public class Animal implements IMapElement {
+    private Vector2d position;
+    private MapDirection direction;
+    private IWorldMap map;
+    final List<IPositionChangeObserver> observers = new ArrayList<>();
+
+    public Animal(IWorldMap map, Vector2d initial_pos) {
+        this.position = initial_pos;
+        this.direction = MapDirection.NORTH;
         this.map = map;
     }
 
-    public Animal(IWorldMap map, Vector2d initialPosition) {
-        this.map = map;
-        this.pos = initialPosition;
-    }
 
-    public void addObserver(IPositionChangeObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(IPositionChangeObserver observer) {
-        observers.remove(observer);
-    }
-
-    public void positionChanged(Vector2d oldPos, Vector2d newPos) {
-        for (IPositionChangeObserver observer : observers) {
-            observer.positionChanged(oldPos, newPos);
-        }
+    public String toString() {
+        return switch (this.direction) {
+            case NORTH -> "^";
+            case EAST -> ">";
+            case WEST -> "<";
+            case SOUTH -> "v";
+        };
     }
 
     public MapDirection getDirection() {
-        return direction;
+        return this.direction;
     }
 
-    public Vector2d getPos() {
-        return pos;
+    public Vector2d getPosition() {
+        return new Vector2d(this.position.x, this.position.y);
     }
 
-    public boolean isAt(Vector2d pos) {
-        return getPos().equals(pos);
+
+    public boolean isAt(Vector2d position) {
+        return (this.position.x == position.x && this.position.y == position.y);
     }
 
-    public void move(MoveDirection dir) {
-        switch (dir) {
-            case RIGHT:
-                this.direction = getDirection().next();
-                return;
-            case LEFT:
-                this.direction = getDirection().previous();
-                return;
-        }
 
-        Vector2d newPos = getPos();
-
-        switch (dir) {
-            case FORWARD:
-                newPos = newPos.add(getDirection().toUnitVector());
+    public void move_zwierzaka(String[] behaviour_str) {
+        MoveDirection[] behaviour_mov = OptionsParser.parse(behaviour_str);
+        for (MoveDirection beh : behaviour_mov) {
+            if (beh != null) {
+                this.move(beh);
+            } else {
                 break;
-            case BACKWARD:
-                newPos = newPos.subtract(getDirection().toUnitVector());
-                break;
-        }
-
-        if (map.canMoveTo(newPos)) {
-            tryEat(newPos);
-            positionChanged(this.pos, newPos);
-            this.pos = newPos;
+            }
         }
     }
 
-    @Override
-    public String toString() {
+    public void move(MoveDirection direction) {
+        Vector2d przem = new Vector2d(0, 0);
         switch (direction) {
-            case NORTH:
-                return "^";
-            case SOUTH:
-                return "v";
-            case WEST:
-                return "<";
-            case EAST:
-                return ">";
-            default:
-                throw new IllegalArgumentException("Invalid animal direction");
+            case RIGHT -> this.direction = this.direction.next();
+            case LEFT -> this.direction = this.direction.previous();
+            case FORWARD -> przem = przem.add(this.direction.toUnitVector());
+            case BACKWARD -> przem = przem.subtract(this.direction.toUnitVector());
         }
+        ;
+        if (map instanceof GrassField && map.objectAt(this.position.add(przem)) instanceof Grass) {
+            ((GrassField) map).eatgrass((Grass) map.objectAt(this.position.add(przem)));
+            ((GrassField) map).addGrass(((GrassField) map).getGrassAmount());
+        }
+
+        if (map.canMoveTo(this.position.add(przem))) {
+            positionChanged(this.position, this.position.add(przem), this);
+            this.position = this.position.add(przem);
+        }
+
     }
 
-    private void tryEat(Vector2d pos) {
-        Object inFront = map.objectAt(pos);
-        if (inFront != null && inFront.getClass() == Grass.class) {
-            GrassField grassField = (GrassField) map;
-            grassField.eatGrass(pos);
+    public void addObserver(IPositionChangeObserver observer) {
+        this.observers.add(observer);
+    }
+
+    public void removeObserver(IPositionChangeObserver observer) {
+        this.observers.remove(observer);
+    }
+
+    void positionChanged(Vector2d oldpos, Vector2d newpos, IMapElement object) {
+        for (IPositionChangeObserver observer : observers) {
+            observer.positionChanged(oldpos, newpos, this);
         }
     }
 }

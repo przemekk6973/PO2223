@@ -1,63 +1,43 @@
 package agh.ics.oop;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
-    private static final Vector2d MARGIN = new Vector2d(3, 3);
-    private final MapVisualizer visualizer = new MapVisualizer(this);
-    private final Map<Vector2d, Animal> animals = new HashMap<>();
+import static java.lang.System.out;
 
-    protected Rect getDrawingBounds() {
-        Rect bounds = animals.values().stream()
-                .map(a -> new Rect(a.getPos(), a.getPos()))
-                .findFirst()
-                .orElse(new Rect(0, 0, 0, 0));
+abstract public class AbstractWorldMap implements IWorldMap, IPositionChangeObserver {
 
-        for (Animal a : animals.values()) {
-            bounds = bounds.extendedTo(a.getPos());
-        }
-
-        return new Rect(
-                bounds.getBL().subtract(MARGIN),
-                bounds.getTR().add(MARGIN)
-        );
-    }
-
-    @Override
-    public String toString() {
-        Rect bounds = getDrawingBounds();
-        return visualizer.draw(bounds.getBL(), bounds.getTR());
-    }
-
-    @Override
-    public boolean place(Animal animal) {
-        if (!canMoveTo(animal.getPos())) {
-            return false;
-        }
-        animals.put(animal.getPos(), animal);
-        animal.addObserver(this);
-        return true;
-    }
-
-    @Override
-    public boolean canMoveTo(Vector2d position) {
-        return !animals.containsKey(position);
-    }
+    final MapBoundary mapBoundary = new MapBoundary();
 
     @Override
     public boolean isOccupied(Vector2d position) {
-        return animals.containsKey(position);
+        return objectAt(position) != null;
     }
 
-    @Override
     public Object objectAt(Vector2d position) {
-        return animals.get(position);
+        return mapBoundary.objectAt(position);
+    }
+
+    public Vector2d[] wymiary(){
+        Vector2d[] tab = new Vector2d[2];
+        tab[0] = mapBoundary.getLower_left();
+        tab[1] = mapBoundary.getUpper_right();
+        return tab;
+    }
+
+
+    public String toString() {
+        MapVisualizer mapvis = new MapVisualizer(this);
+        Vector2d[] tab = wymiary();
+        return mapvis.draw(tab[0], tab[1]);
     }
 
     @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        Animal a = animals.remove(oldPosition);
-        animals.put(newPosition, a);
+    public void positionChanged(Vector2d oldPosition, Vector2d newPosition, IMapElement object) {
+        mapBoundary.positionChanged(oldPosition,newPosition,object);
     }
+
+
 }
