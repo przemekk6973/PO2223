@@ -23,114 +23,114 @@ class AnimalTest {
         a.move(MoveDirection.FORWARD);
         a.move(MoveDirection.FORWARD);
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 2), a.getPos());
+        assertEquals(new Vector2d(4, 2), a.getPosition());
         assertEquals(MapDirection.EAST, a.getDirection());
     }
 
     @Test
     void testMove() {
         Animal a = new Animal(new RectangularMap(5, 5));
-        assertEquals(new Vector2d(2, 2), a.getPos());
+        assertEquals(new Vector2d(2, 2), a.getPosition());
         assertEquals(MapDirection.NORTH, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2, 3), a.getPos());
+        assertEquals(new Vector2d(2, 3), a.getPosition());
         assertEquals(MapDirection.NORTH, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2, 4), a.getPos());
+        assertEquals(new Vector2d(2, 4), a.getPosition());
         assertEquals(MapDirection.NORTH, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2, 4), a.getPos());
+        assertEquals(new Vector2d(2, 4), a.getPosition());
         assertEquals(MapDirection.NORTH, a.getDirection());
 
         a.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(2, 3), a.getPos());
+        assertEquals(new Vector2d(2, 3), a.getPosition());
         assertEquals(MapDirection.NORTH, a.getDirection());
 
         a.move(MoveDirection.RIGHT);
-        assertEquals(new Vector2d(2, 3), a.getPos());
+        assertEquals(new Vector2d(2, 3), a.getPosition());
         assertEquals(MapDirection.EAST, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(3, 3), a.getPos());
+        assertEquals(new Vector2d(3, 3), a.getPosition());
         assertEquals(MapDirection.EAST, a.getDirection());
 
         a.move(MoveDirection.LEFT);
-        assertEquals(new Vector2d(3, 3), a.getPos());
+        assertEquals(new Vector2d(3, 3), a.getPosition());
         assertEquals(MapDirection.NORTH, a.getDirection());
 
         a.move(MoveDirection.LEFT);
-        assertEquals(new Vector2d(3, 3), a.getPos());
+        assertEquals(new Vector2d(3, 3), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(4, 3), a.getPos());
+        assertEquals(new Vector2d(4, 3), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.LEFT);
-        assertEquals(new Vector2d(4, 3), a.getPos());
+        assertEquals(new Vector2d(4, 3), a.getPosition());
         assertEquals(MapDirection.SOUTH, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 2), a.getPos());
+        assertEquals(new Vector2d(4, 2), a.getPosition());
         assertEquals(MapDirection.SOUTH, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 1), a.getPos());
+        assertEquals(new Vector2d(4, 1), a.getPosition());
         assertEquals(MapDirection.SOUTH, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 0), a.getPos());
+        assertEquals(new Vector2d(4, 0), a.getPosition());
         assertEquals(MapDirection.SOUTH, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(4, 0), a.getPos());
+        assertEquals(new Vector2d(4, 0), a.getPosition());
         assertEquals(MapDirection.SOUTH, a.getDirection());
 
         a.move(MoveDirection.RIGHT);
-        assertEquals(new Vector2d(4, 0), a.getPos());
+        assertEquals(new Vector2d(4, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(3, 0), a.getPos());
+        assertEquals(new Vector2d(3, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(2, 0), a.getPos());
+        assertEquals(new Vector2d(2, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(1, 0), a.getPos());
+        assertEquals(new Vector2d(1, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(0, 0), a.getPos());
+        assertEquals(new Vector2d(0, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.FORWARD);
-        assertEquals(new Vector2d(0, 0), a.getPos());
+        assertEquals(new Vector2d(0, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(1, 0), a.getPos());
+        assertEquals(new Vector2d(1, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(2, 0), a.getPos());
+        assertEquals(new Vector2d(2, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(3, 0), a.getPos());
+        assertEquals(new Vector2d(3, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(4, 0), a.getPos());
+        assertEquals(new Vector2d(4, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
 
         a.move(MoveDirection.BACKWARD);
-        assertEquals(new Vector2d(4, 0), a.getPos());
+        assertEquals(new Vector2d(4, 0), a.getPosition());
         assertEquals(MapDirection.WEST, a.getDirection());
     }
 }
